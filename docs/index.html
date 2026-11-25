@@ -94,7 +94,7 @@ footer{padding:30px 0;color:var(--muted);font-size:14px}
   <text x="425" y="288" class="s">kk-health (5 min) · kk-backup (30 min) · kk-eval (1 h) · kk-sync-docs (1 h)</text>
   <text x="425" y="306" class="s">kk-render-config: builds .env + prompt from Parameter Store + S3 at start</text>
   <text x="425" y="324" class="s">CloudWatch agent: memory metric + log files</text>
-  <rect x="845" y="75" width="145" height="75" class="b"/><text x="917" y="102" text-anchor="middle" class="t">Groq API</text><text x="917" y="120" text-anchor="middle" class="s">llama-3.1-8b-instant</text><text x="917" y="137" text-anchor="middle" class="s">(outside AWS, free tier)</text>
+  <rect x="845" y="75" width="145" height="75" class="b"/><text x="917" y="102" text-anchor="middle" class="t">Groq API</text><text x="917" y="120" text-anchor="middle" class="s">openai/gpt-oss-20b</text><text x="917" y="137" text-anchor="middle" class="s">(outside AWS, free tier)</text>
   <rect x="10" y="400" width="190" height="80" class="b"/><text x="105" y="428" text-anchor="middle" class="t">Amazon S3</text><text x="105" y="446" text-anchor="middle" class="s">docs/ (café knowledge)</text><text x="105" y="463" text-anchor="middle" class="s">backups/ · deploy/ · versioned</text>
   <rect x="215" y="400" width="190" height="80" class="b"/><text x="310" y="428" text-anchor="middle" class="t">SSM Parameter Store</text><text x="310" y="446" text-anchor="middle" class="s">API key + 5 secrets</text><text x="310" y="463" text-anchor="middle" class="s">(SecureString, KMS)</text>
   <rect x="420" y="400" width="190" height="80" class="b"/><text x="515" y="428" text-anchor="middle" class="t">Amazon CloudWatch</text><text x="515" y="446" text-anchor="middle" class="s">dashboard · 8 alarms</text><text x="515" y="463" text-anchor="middle" class="s">log groups (14-day)</text>
@@ -138,7 +138,7 @@ footer{padding:30px 0;color:var(--muted);font-size:14px}
 </table>
 <p><b>5. Data.</b> Source: written by us for this project (no licence issues). Size: 4 Markdown files, about 9 KB. Anything personal: <b>no — all invented</b> (café, street, phone, email). Sent to a third-party AI service: the café documents and the guest’s question go to Groq; both are invented/demo data, and the banner tells users not to enter personal data.</p>
 <p><b>6. How good it is.</b> <span id="quality-number">See <a href="#results">Results</a></span>: measured by <code>ops/kk-eval.py</code>, which asks 12 labelled questions every hour (10 answerable, 2 that must be refused or deflected) and checks each answer for the expected fact.</p>
-<p><b>7. How it is served.</b> EC2 t3.small, us-east-1, Docker; public URL above (CloudFront → nginx → LibreChat <code>/api/agents/chat</code>); model <code>llama-3.1-8b-instant</code> on Groq’s free tier. If Groq is down or rate-limits us, the chat shows an error message, the hourly answer test fails and the <code>kk-answers-bad</code> alarm emails us.</p>
+<p><b>7. How it is served.</b> EC2 t3.small, us-east-1, Docker; public URL above (CloudFront → nginx → LibreChat <code>/api/agents/chat</code>); model <code>openai/gpt-oss-20b</code> on Groq’s free tier. If Groq is down or rate-limits us, the chat shows an error message, the hourly answer test fails and the <code>kk-answers-bad</code> alarm emails us.</p>
 <p><b>8. Limitations and risks.</b> It cannot take orders, bookings or payments, and knows nothing outside its 4 documents. If a document is wrong, the bot repeats the mistake confidently. A small model can occasionally mix up two prices or invent a detail — users must confirm prices at the counter and must always ask staff about allergies. Misuse: people could try to make it talk about other topics (“prompt injection”); the prompt tells it to decline, but this is not guaranteed.</p>
 <p><b>9. Operational summary.</b> Code: our Git repository (see <a href="#repo">README</a>). Backups: MongoDB dump to S3 every 30 minutes, kept 30 days; S3 versioning on. Health: 8 CloudWatch alarms → SNS email. Contact: the two of us (hello@kapekanto.example for the fictional café).</p>
 </section>
@@ -303,8 +303,11 @@ sudo df -h /                                                    # -> back under 
 
 <section id="video">
 <h2>Presentation video</h2>
-<div class="todo">Paste the YouTube embed here: replace <code>VIDEO_ID</code> below with your video’s ID.</div>
-<div class="video"><iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Kapé Kanto Barista — SAM10 presentation" allowfullscreen></iframe></div>
+<p>Chris Mariejo S. Garcia (AI and integration) and Jerry Busa (reliability) present the live system, security, monitoring, backup and restore, and the disk-full incident (8 min 45 s).</p>
+<video controls preload="metadata" style="width:100%;border-radius:8px;background:#111" src="kapekanto-presentation.mp4">
+  Your browser cannot play this video. <a href="kapekanto-presentation.mp4">Download it here</a>.
+</video>
+<p><a href="kapekanto-presentation.mp4">Open or download the video (MP4)</a></p>
 </section>
 
 <section id="repo">
